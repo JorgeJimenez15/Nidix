@@ -7,7 +7,7 @@ export default class Server {
     constructor() {
         serve<DataWebSocket>({
             fetch(req, server) {
-                // TODO: Read upgrade documnentation for multiple routes
+                // TODO: Read upgrade documentation for multiple routes
                 if (server.upgrade(req, {
                     data: {
                         player: new Player()
