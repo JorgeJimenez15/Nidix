@@ -1,1 +1,3 @@
-export default class AntiProxy {}
+import { Plugin } from '../Plugin.js'
+
+export default class AntiProxy extends Plugin {}

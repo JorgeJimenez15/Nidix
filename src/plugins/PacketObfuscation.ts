@@ -1,6 +1,8 @@
+import { Plugin } from '../Plugin.js'
 import { type BinaryLike, createHash, randomBytes } from 'crypto'
 
-export default class PacketObfuscation {
+// TODO: I'll maybe leave this at the end
+export default class PacketObfuscation extends Plugin {
     sha256(data: BinaryLike): string {
         return createHash('sha256').update(data).digest('hex')
     }

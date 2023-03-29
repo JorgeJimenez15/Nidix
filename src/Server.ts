@@ -30,7 +30,5 @@ export default class Server {
                 }
             }
         })
-
-        console.log('Server listening on port ')
     }
 }
