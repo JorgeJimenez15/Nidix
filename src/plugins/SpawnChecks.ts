@@ -12,7 +12,7 @@ export default class SpawnChecks extends Plugin {
     }
 
     playerMessage(packet: Buffer) {
-        if (packet.readUint8() !== 0x01) return
+        if (packet.readUint8() !== 0x00) return
 
         const second = Math.floor(Date.now() / 1000)
         this.intervals.push(second)
