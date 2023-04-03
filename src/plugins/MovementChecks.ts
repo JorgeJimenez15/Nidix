@@ -1,16 +1,20 @@
 import { Plugin } from '../Plugin.js'
+import { insertBan } from '../Database.js'
+
 import { type ServerWebSocket } from 'bun'
 import { type DataWebSocket } from '../types.js'
 
 export default class MovementChecks extends Plugin {
     declare playerX: number
     declare playerY: number
+    declare flags: number
 
     constructor(ws: ServerWebSocket<DataWebSocket>, socket: WebSocket) {
         super(ws, socket)
 
         this.playerX = 0
         this.playerY = 0
+        this.flags = 0
     }
 
     getDistance(x1: number, y1: number, x2: number, y2: number): number {
@@ -46,10 +50,14 @@ export default class MovementChecks extends Plugin {
         if (this.getDistance(this.playerX, this.playerY, movementX, movementY) > 960) {
             // Allows cheaters to teleport if the server is using a vulnerable MultiOgar-Edited version
             if (movementX === Infinity || movementX === -Infinity || movementY === Infinity || movementY === -Infinity) {
-                // User should be temporary banned for cheating
+                insertBan(this.ws.remoteAddress)
+                return this.ws.close(1000)
             }
 
             // User should be flagged and kicked if repeated multiple times
+            if (this.flags > 64) return this.ws.close(1000)
+
+            this.flags++
         }
     }
 

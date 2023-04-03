@@ -1,5 +1,6 @@
 import { serve } from 'bun'
 import Player from './Player.js'
+import { getBan } from './Database.js'
 
 import { type DataWebSocket } from './types.js'
 
@@ -20,6 +21,8 @@ export default class Server {
             },
             websocket: {
                 open(ws) {
+                    if (getBan(ws.remoteAddress)) ws.close(1000, 'Access denied')
+
                     ws.data.player.initialize(ws, 'ws://192.168.0.2:8080')
                 },
                 message(ws, message) {
